@@ -1,9 +1,12 @@
 package co.uniquindio.academiaparcial.Model;
 
+import co.uniquindio.academiaparcial.Factory.CursoFactory;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Academia {
+public class Academia implements ICalculadoraIngresos {
     private String nombreComercial;
     private String nit;
     private String direccion;
@@ -11,112 +14,140 @@ public class Academia {
     private String correo;
     private String sitioWeb;
 
-    private  List<Estudiante> listestudiantes;
-    private  List<Profesor> listprofesores;
-    private  List<Curso> listcursos;
-    private  List<ServicioAdicional> listservicios;
-    private List<Matricula> listmatriculas;
+    private List<Estudiante> listEstudiantes;
+    private List<Profesor> listProfesores;
+    private List<Curso> listCursos;
+    private List<ServicioAdicional> listServicios;
+    private List<Matricula> listMatriculas;
 
-    public Academia(String nombreComercial, String nit, String direccion,
-                    String telefono, String correo, String sitioWeb) {
+    public Academia(String nombreComercial, String nit, String direccion, String telefono, String correo, String sitioWeb) {
         this.nombreComercial = nombreComercial;
         this.nit = nit;
         this.direccion = direccion;
         this.telefono = telefono;
         this.correo = correo;
         this.sitioWeb = sitioWeb;
-        this.listestudiantes = new ArrayList<>();
-        this.listprofesores = new ArrayList<>();
-        this.listcursos = new ArrayList<>();
-        this.listservicios = new ArrayList<>();
-        this.listmatriculas = new ArrayList<>();
+
+        this.listEstudiantes = new ArrayList<>();
+        this.listProfesores = new ArrayList<>();
+        this.listCursos = new ArrayList<>();
+        this.listServicios = new ArrayList<>();
+        this.listMatriculas = new ArrayList<>();
     }
 
-    public String getNombreComercial() {
-        return nombreComercial;
+    // --- GETTERS DE ATRIBUTOS Y LISTAS ---
+
+    public String getNombreComercial() { return nombreComercial; }
+    public String getNit() { return nit; }
+    public String getDireccion() { return direccion; }
+    public String getTelefono() { return telefono; }
+    public String getCorreo() { return correo; }
+    public String getSitioWeb() { return sitioWeb; }
+
+    public List<Estudiante> getListEstudiantes() { return listEstudiantes; }
+    public List<Profesor> getListProfesores() { return listProfesores; }
+    public List<Curso> getListCursos() { return listCursos; }
+    public List<ServicioAdicional> getListServicios() { return listServicios; }
+    public List<Matricula> getListMatriculas() { return listMatriculas; }
+
+    // --- MÉTODOS DE REGISTRO (ACEPTAN OBJETOS Y TAMBIÉN PARÁMETROS INDIVIDUALES) ---
+
+    // 1. Registro de Estudiantes
+    public void registrarEstudiante(Estudiante estudiante) {
+        this.listEstudiantes.add(estudiante);
     }
 
-    public void setNombreComercial(String nombreComercial) {
-        this.nombreComercial = nombreComercial;
+    public void registrarEstudiante(String doc, String nombre, String tel, String correo, int edad) {
+        Estudiante nuevo = new Estudiante(doc, nombre, tel, correo, edad, LocalDate.now());
+        this.listEstudiantes.add(nuevo);
     }
 
-    public String getNit() {
-        return nit;
+    // 2. Registro de Profesores
+    public void registrarProfesor(Profesor profesor) {
+        this.listProfesores.add(profesor);
     }
 
-    public void setNit(String nit) {
-        this.nit = nit;
+    public void registrarProfesor(String id, String nombre, Idioma idioma, String tel, double tarifa) {
+        Profesor nuevo = new Profesor(id, nombre, idioma, tel, tarifa);
+        this.listProfesores.add(nuevo);
     }
 
-    public String getDireccion() {
-        return direccion;
+    // 3. Registro de Servicios Adicionales
+    public void registrarServicio(ServicioAdicional servicio) {
+        this.listServicios.add(servicio);
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void registrarServicio(String codigo, String nombre, String desc, double precio, boolean disponible) {
+        ServicioAdicional nuevo = new ServicioAdicional(codigo, nombre, desc, precio, disponible);
+        this.listServicios.add(nuevo);
     }
 
-    public String getTelefono() {
-        return telefono;
+    // 4. Registro de Cursos
+    public void registrarCurso(Curso curso) {
+        this.listCursos.add(curso);
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void crearYRegistrarCurso(TipoCurso tipo, String codigo, String nombre, Idioma idioma, EstadoCurso estado, String desc, int meses, double valorMes, int sesiones, double tarifaSesion, NivelReferencia nivel, String objetivos) {
+        Curso nuevoCurso = CursoFactory.crearCurso(tipo, codigo, nombre, idioma, estado, desc, meses, valorMes, sesiones, tarifaSesion, nivel, objetivos);
+        if (nuevoCurso != null) {
+            this.listCursos.add(nuevoCurso);
+        }
     }
 
-    public String getCorreo() {
-        return correo;
+    // 5. Registro de Matrículas
+    public void registrarMatricula(Matricula matricula) {
+        this.listMatriculas.add(matricula);
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    // --- MÉTODOS DE BÚSQUEDA ---
+
+    public Estudiante buscarEstudiantePorDocumento(String documento) {
+        for (Estudiante e : listEstudiantes) {
+            if (e.getDocumento().equals(documento)) {
+                return e;
+            }
+        }
+        return null;
     }
 
-    public String getSitioWeb() {
-        return sitioWeb;
+    public Profesor buscarProfesorPorIdentificacion(String identificacion) {
+        for (Profesor p : listProfesores) {
+            if (p.getIdentificacion().equals(identificacion)) {
+                return p;
+            }
+        }
+        return null;
     }
 
-    public void setSitioWeb(String sitioWeb) {
-        this.sitioWeb = sitioWeb;
+    public Curso buscarCursoPorCodigo(String codigo) {
+        for (Curso c : listCursos) {
+            if (c.getCodigo().equals(codigo)) {
+                return c;
+            }
+        }
+        return null;
     }
 
-    public List<Estudiante> getEstudiantes() {
-        return listestudiantes;
+    public ServicioAdicional buscarServicioPorCodigo(String codigo) {
+        for (ServicioAdicional s : listServicios) {
+            if (s.getCodigo().equals(codigo)) {
+                return s;
+            }
+        }
+        return null;
     }
 
-    public void setEstudiantes(List<Estudiante> estudiantes) {
-        this.listestudiantes = estudiantes;
-    }
+    // --- CÁLCULO DE INGRESOS (INTERFAZ ICalculadoraIngresos) ---
 
-    public List<Profesor> getProfesores() {
-        return listprofesores;
-    }
 
-    public void setProfesores(List<Profesor> profesores) {
-        this.listprofesores = profesores;
-    }
-
-    public List<Curso> getCursos() {
-        return listcursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        this.listcursos = cursos;
-    }
-
-    public List<ServicioAdicional> getServicios() {
-        return listservicios;
-    }
-
-    public void setServicios(List<ServicioAdicional> servicios) {
-        this.listservicios = servicios;
-    }
-
-    public List<Matricula> getMatriculas() {
-        return listmatriculas;
-    }
-
-    public void setMatriculas(List<Matricula> matriculas) {
-        this.listmatriculas = matriculas;
+    public  double calcularIngresosEntre(LocalDate fInicio, LocalDate fFin) {
+        double totalIngresos = 0;
+        for (Matricula m : listMatriculas) {
+            LocalDate fecha = m.getFechaMatricula();
+            if ((fecha.isEqual(fInicio) || fecha.isAfter(fInicio)) && (fecha.isEqual(fFin) || fecha.isBefore(fFin))) {
+                totalIngresos += m.calcularValorTotal();
+            }
+        }
+        return totalIngresos;
     }
 }
