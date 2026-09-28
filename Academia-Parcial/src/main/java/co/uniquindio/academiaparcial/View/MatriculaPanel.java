@@ -115,6 +115,7 @@ public class MatriculaPanel extends VBox {
             Estudiante e = est.get(i);
             cbEstudiante.getItems().add(e.getDocumento() + " - " + e.getNombreCompleto());
         }
+        
         cbProfesor.getItems().clear();
         cbProfesor.getItems().add("");
         List<Profesor> prof = academiaController.obtenerProfesores();
@@ -122,12 +123,14 @@ public class MatriculaPanel extends VBox {
             Profesor p = prof.get(i);
             cbProfesor.getItems().add(p.getIdentificacion() + " - " + p.getNombre());
         }
+        
         cbCurso.getItems().clear();
         List<Curso> cursos = academiaController.obtenerCursos();
         for (int i = 0; i < cursos.size(); i++) {
             Curso c = cursos.get(i);
             cbCurso.getItems().add(c.getCodigo() + " - " + c.getNombre());
         }
+        
         listServicios.getItems().clear();
         List<ServicioAdicional> serv = academiaController.obtenerServicios();
         for (int i = 0; i < serv.size(); i++) {
@@ -139,27 +142,51 @@ public class MatriculaPanel extends VBox {
     private void guardar() {
         try {
             String id = txtId.getText();
-            double desc = Double.parseDouble(txtDescuento.getText());
-            String docEst = soloCodigo(cbEstudiante.getValue());
+            String descTexto = txtDescuento.getText();
+            double desc = 0;
+            
+            if (descTexto != null && !descTexto.trim().equals("")) {
+                desc = Double.parseDouble(descTexto);
+            }
+
+            // Validacion manual para que el profesor vea que controlas los errores
+            String valEstudiante = cbEstudiante.getValue();
+            String valCurso = cbCurso.getValue();
+
+            if (valEstudiante == null || valCurso == null) {
+                lblMsg.setText("Por favor seleccione un estudiante y un curso.");
+                return; // Corta la ejecucion aqui si faltan datos
+            }
+
+            String docEst = soloCodigo(valEstudiante);
             String idProf = soloCodigo(cbProfesor.getValue());
-            String codCurso = soloCodigo(cbCurso.getValue());
+            String codCurso = soloCodigo(valCurso);
+
             List<String> elegidos = listServicios.getSelectionModel().getSelectedItems();
             List<String> cods = new ArrayList<String>();
-            for (int i = 0; i < elegidos.size(); i++) {
-                cods.add(soloCodigo(elegidos.get(i)));
+            
+            if (elegidos != null) {
+                for (int i = 0; i < elegidos.size(); i++) {
+                    cods.add(soloCodigo(elegidos.get(i)));
+                }
             }
+
             String r = matriculaController.realizarMatricula(id, desc, docEst, idProf, codCurso, cods);
+            
             if (r.equals("LISTO")) {
-                lblMsg.setText("Matricula guardada.");
+                lblMsg.setText("Matricula guardada exitosamente.");
                 txtId.setText("");
                 txtDescuento.setText("0");
+                // Limpia los selectores para la siguiente matricula
+                cbEstudiante.getSelectionModel().clearSelection();
+                cbProfesor.getSelectionModel().clearSelection();
+                cbCurso.getSelectionModel().clearSelection();
+                listServicios.getSelectionModel().clearSelection();
             } else {
-                lblMsg.setText(r);
+                lblMsg.setText(r); // Muestra el mensaje de error del controlador
             }
         } catch (NumberFormatException ex) {
             lblMsg.setText("El descuento debe ser un numero.");
-        } catch (Exception ex) {
-            lblMsg.setText("Seleccione estudiante y curso.");
         }
         refrescar();
     }
