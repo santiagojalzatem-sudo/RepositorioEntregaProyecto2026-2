@@ -1,6 +1,5 @@
 package co.uniquindio.academiaparcial.Model;
 
-// CursoPersonalizado.java
 public class CursoPersonalizado extends Curso {
     private int numeroSesiones;
     private double tarifaReferenciaSesion;
@@ -19,20 +18,46 @@ public class CursoPersonalizado extends Curso {
         return numeroSesiones;
     }
 
+    public void setNumeroSesiones(int numeroSesiones) {
+        this.numeroSesiones = numeroSesiones;
+    }
+
     public double getTarifaReferenciaSesion() {
         return tarifaReferenciaSesion;
+    }
+
+    public void setTarifaReferenciaSesion(double tarifaReferenciaSesion) {
+        this.tarifaReferenciaSesion = tarifaReferenciaSesion;
     }
 
     public NivelReferencia getNivelReferencia() {
         return nivelReferencia;
     }
 
+    public void setNivelReferencia(NivelReferencia nivelReferencia) {
+        this.nivelReferencia = nivelReferencia;
+    }
+
     public String getObjetivos() {
         return objetivos;
     }
 
-    @Override
+    public void setObjetivos(String objetivos) {
+        this.objetivos = objetivos;
+    }
+
     public double calcularCostoBase() {
-        return (getDuracionMeses() * getValorMensualidad()) + (numeroSesiones * tarifaReferenciaSesion);
+        double base = getDuracionMeses() * getValorMensualidad();
+        double sesiones = numeroSesiones * tarifaReferenciaSesion;
+        double total = base + sesiones;
+        return total;
+    }
+
+    public Curso clonar() {
+        CursoPersonalizado copia = new CursoPersonalizado(getCodigo(), getNombre(), getIdioma(), getEstado(), getDescripcion(), getDuracionMeses(), getValorMensualidad(), numeroSesiones, tarifaReferenciaSesion, nivelReferencia, objetivos);
+        for (int i = 0; i < getListBeneficios().size(); i++) {
+            copia.agregarBeneficio(getListBeneficios().get(i));
+        }
+        return copia;
     }
 }

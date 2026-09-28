@@ -1,0 +1,100 @@
+.root {
+    -fx-background-color: #f1f5f9;
+    -fx-font-family: "Segoe UI", "Arial";
+    -fx-font-size: 13px;
+}
+.header {
+    -fx-background-color: linear-gradient(to right, #0f172a, #1e3a5f);
+    -fx-padding: 16 20 16 20;
+}
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.header-sub {
+    -fx-text-fill: #93c5fd;
+    -fx-font-size: 12px;
+}
+.header-badge {
+    -fx-background-color: #38bdf8;
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 20;
+}
+.tab-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+.tab-pane .tab-header-area {
+    -fx-padding: 6 6 0 6;
+}
+.tab {
+    -fx-background-color: #e2e8f0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 8 16 8 16;
+}
+.tab:selected {
+    -fx-background-color: white;
+}
+.tab .tab-label {
+    -fx-text-fill: #334155;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+.tab:selected .tab-label {
+    -fx-text-fill: #0f172a;
+}
+.tab-content-area {
+    -fx-background-color: white;
+    -fx-background-radius: 0 12 12 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 0 12 12 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 2);
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: white;
+}
+.button {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #1e40af;
+}
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 6;
+}
+.list-view {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+.footer {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 8 16 8 16;
+}
+.footer-label {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.panel-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}

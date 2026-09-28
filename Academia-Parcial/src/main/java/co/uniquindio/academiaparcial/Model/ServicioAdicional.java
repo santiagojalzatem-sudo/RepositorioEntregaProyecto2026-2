@@ -1,6 +1,5 @@
 package co.uniquindio.academiaparcial.Model;
 
-// ServicioAdicional.java
 public class ServicioAdicional {
     private String codigo;
     private String nombre;
@@ -20,19 +19,48 @@ public class ServicioAdicional {
         return codigo;
     }
 
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {
         return descripcion;
     }
 
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public double getPrecio() {
         return precio;
     }
 
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
     public boolean isDisponible() {
         return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public ServicioAdicional clonar() {
+        ServicioAdicional copia = new ServicioAdicional(codigo, nombre, descripcion, precio, disponible);
+        return copia;
+    }
+
+    public String toString() {
+        return codigo + " - " + nombre + " $" + precio;
     }
 }

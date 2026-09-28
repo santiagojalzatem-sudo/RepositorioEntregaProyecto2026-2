@@ -1,6 +1,5 @@
 package co.uniquindio.academiaparcial.Model;
 
-// Estudiante.java
 import java.time.LocalDate;
 
 public class Estudiante {
@@ -66,5 +65,9 @@ public class Estudiante {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public String toString() {
+        return documento + " - " + nombreCompleto;
     }
 }

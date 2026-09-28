@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Matricula {
 
-    // 1. Atributos inmutables de la Matrícula
     private final String id;
     private final LocalDate fechaMatricula;
     private final double descuento;
@@ -15,7 +14,6 @@ public class Matricula {
     private final Curso curso;
     private final List<ServicioAdicional> serviciosAdicionales;
 
-    // 2. Constructor PRIVADO: solo la clase interna Builder puede llamarlo
     private Matricula(Builder builder) {
         this.id = builder.id;
         this.fechaMatricula = builder.fechaMatricula;
@@ -26,12 +24,73 @@ public class Matricula {
         this.serviciosAdicionales = builder.serviciosAdicionales;
     }
 
-    // Getters y métodos de negocio (como calcularValorTotal)
-    public String getId() { return id; }
-    public double getDescuento() { return descuento; }
-    // ... otros getters ...
+    public String getId() {
+        return id;
+    }
 
-    // 3. CLASE INTERNA ESTÁTICA BUILDER (Exactamente como en Casa)
+    public LocalDate getFechaMatricula() {
+        return fechaMatricula;
+    }
+
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public List<ServicioAdicional> getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+
+    public double calcularValorTotal() {
+        double total = 0;
+        if (curso != null) {
+            total = curso.calcularCostoBase();
+        }
+        if (serviciosAdicionales != null) {
+            for (int i = 0; i < serviciosAdicionales.size(); i++) {
+                ServicioAdicional s = serviciosAdicionales.get(i);
+                if (s != null && s.isDisponible()) {
+                    total = total + s.getPrecio();
+                }
+            }
+        }
+        if (descuento > 0) {
+            if (descuento <= 100) {
+                double valorDescuento = total * (descuento / 100.0);
+                total = total - valorDescuento;
+            } else {
+                total = total - descuento;
+            }
+        }
+        if (total < 0) {
+            total = 0;
+        }
+        return total;
+    }
+
+    public String toString() {
+        String nombreEst = "Sin estudiante";
+        if (estudiante != null) {
+            nombreEst = estudiante.getNombreCompleto();
+        }
+        String nombreCurso = "Sin curso";
+        if (curso != null) {
+            nombreCurso = curso.getNombre();
+        }
+        return "Matricula " + id + " | " + nombreEst + " | " + nombreCurso + " | $" + calcularValorTotal();
+    }
+
     public static class Builder {
         private String id;
         private LocalDate fechaMatricula = LocalDate.now();
@@ -39,9 +98,8 @@ public class Matricula {
         private Estudiante estudiante;
         private Profesor profesor;
         private Curso curso;
-        private List<ServicioAdicional> serviciosAdicionales = new ArrayList<>();
+        private List<ServicioAdicional> serviciosAdicionales = new ArrayList<ServicioAdicional>();
 
-        // Métodos de encadenamiento que retornan 'this'
         public Builder id(String id) {
             this.id = id;
             return this;
@@ -74,13 +132,12 @@ public class Matricula {
 
         public Builder agregarServicio(ServicioAdicional servicio) {
             if (this.serviciosAdicionales == null) {
-                this.serviciosAdicionales = new ArrayList<>();
+                this.serviciosAdicionales = new ArrayList<ServicioAdicional>();
             }
             this.serviciosAdicionales.add(servicio);
             return this;
         }
 
-        // Método final que entrega el objeto Matricula construido
         public Matricula build() {
             return new Matricula(this);
         }

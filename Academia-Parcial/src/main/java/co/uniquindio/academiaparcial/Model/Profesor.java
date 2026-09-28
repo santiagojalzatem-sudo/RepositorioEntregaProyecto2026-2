@@ -1,6 +1,5 @@
 package co.uniquindio.academiaparcial.Model;
 
-// Profesor.java
 public class Profesor {
     private String identificacion;
     private String nombre;
@@ -20,19 +19,43 @@ public class Profesor {
         return identificacion;
     }
 
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Idioma getIdioma() {
         return idioma;
     }
 
+    public void setIdioma(Idioma idioma) {
+        this.idioma = idioma;
+    }
+
     public String getTelefono() {
         return telefono;
     }
 
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public double getTarifaPorSesion() {
         return tarifaPorSesion;
+    }
+
+    public void setTarifaPorSesion(double tarifaPorSesion) {
+        this.tarifaPorSesion = tarifaPorSesion;
+    }
+
+    public String toString() {
+        return nombre + " (" + identificacion + ") - " + idioma;
     }
 }

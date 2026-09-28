@@ -1,53 +1,69 @@
 package co.uniquindio.academiaparcial.Controller;
 
-
-import co.uniquindio.academiaparcial.Model.*;
+import co.uniquindio.academiaparcial.Model.Academia;
+import co.uniquindio.academiaparcial.Model.Curso;
+import co.uniquindio.academiaparcial.Model.Estudiante;
+import co.uniquindio.academiaparcial.Model.Matricula;
+import co.uniquindio.academiaparcial.Model.Profesor;
+import co.uniquindio.academiaparcial.Model.ServicioAdicional;
 import co.uniquindio.academiaparcial.Singleton.AcademiaHolder;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public class MatriculaController {
+
     private Academia academia;
 
     public MatriculaController() {
         this.academia = AcademiaHolder.getInstance().getAcademia();
     }
 
-    public boolean realizarMatricula(String idMatricula, double descuento, String docEstudiante, String idProfesor, String codCurso, List<String> codServicios) {
+    public String realizarMatricula(String idMatricula, double descuento, String docEstudiante, String idProfesor, String codCurso, List<String> codServicios) {
+        if (idMatricula == null || idMatricula.trim().equals("")) {
+            return "El id de la matricula es obligatorio";
+        }
         Estudiante e = academia.buscarEstudiantePorDocumento(docEstudiante);
-        Profesor p = academia.buscarProfesorPorIdentificacion(idProfesor);
+        if (e == null) {
+            return "No se encontro el estudiante";
+        }
         Curso c = academia.buscarCursoPorCodigo(codCurso);
-
-        // Validación de existencia de componentes obligatorios
-        if (e == null || c == null) {
-            return false;
+        if (c == null) {
+            return "No se encontro el curso";
+        }
+        Profesor p = null;
+        if (idProfesor != null && !idProfesor.trim().equals("")) {
+            p = academia.buscarProfesorPorIdentificacion(idProfesor);
         }
 
-        // 1. Instanciamos e iniciamos la configuración del Builder
-        Matricula.Builder builder = new Matricula.Builder()
-                .id(idMatricula)
-                .fechaMatricula(LocalDate.now())
-                .descuento(descuento)
-                .estudiante(e)
-                .profesor(p)
-                .curso(c);
+        Matricula.Builder builder = new Matricula.Builder();
+        builder.id(idMatricula);
+        builder.fechaMatricula(LocalDate.now());
+        builder.descuento(descuento);
+        builder.estudiante(e);
+        builder.profesor(p);
+        builder.curso(c.clonar());
 
-        // 2. Agregamos los servicios adicionales AL BUILDER antes de construir la matrícula
         if (codServicios != null) {
-            for (String codServ : codServicios) {
-                ServicioAdicional s = academia.buscarServicioPorCodigo(codServ);
+            for (int i = 0; i < codServicios.size(); i++) {
+                String cod = codServicios.get(i);
+                ServicioAdicional s = academia.buscarServicioPorCodigo(cod);
                 if (s != null) {
-                    builder.agregarServicio(s); // Método ejecutado sobre el Builder
+                    builder.agregarServicio(s.clonar());
                 }
             }
         }
 
-        // 3. Construimos el objeto Matricula final
-        Matricula nuevaMatricula = builder.build();
+        Matricula nueva = builder.build();
+        academia.registrarMatricula(nueva);
+        return "LISTO";
+    }
 
-        // 4. Registramos la matrícula en la academia
-        academia.registrarMatricula(nuevaMatricula);
-        return true;
+    public double consultarIngresos(LocalDate inicio, LocalDate fin) {
+        double total = academia.calcularIngresosEntre(inicio, fin);
+        return total;
+    }
+
+    public List<Matricula> obtenerMatriculas() {
+        return academia.getListMatriculas();
     }
 }

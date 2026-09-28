@@ -1,6 +1,4 @@
-package co.uniquindio.academiaparcial.Model;// Curso.java (Clase Abstracta Base)
-import co.uniquindio.academiaparcial.Model.EstadoCurso;
-import co.uniquindio.academiaparcial.Model.Idioma;
+package co.uniquindio.academiaparcial.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ public abstract class Curso {
         this.descripcion = descripcion;
         this.duracionMeses = duracionMeses;
         this.valorMensualidad = valorMensualidad;
-        this.listBeneficios = new ArrayList<>();
+        this.listBeneficios = new ArrayList<String>();
     }
 
     public String getCodigo() {
@@ -95,4 +93,10 @@ public abstract class Curso {
     }
 
     public abstract double calcularCostoBase();
+
+    public abstract Curso clonar();
+
+    public String toString() {
+        return codigo + " - " + nombre + " (" + idioma + ")";
+    }
 }
