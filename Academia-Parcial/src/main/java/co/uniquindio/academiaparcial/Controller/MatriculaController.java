@@ -1,6 +1,6 @@
 package co.uniquindio.academiaparcial.Controller;
 
-import co.uniquindio.academiaparcial.Builder.MatriculaBuilder;
+
 import co.uniquindio.academiaparcial.Model.*;
 import co.uniquindio.academiaparcial.Singleton.AcademiaHolder;
 
@@ -19,42 +19,35 @@ public class MatriculaController {
         Profesor p = academia.buscarProfesorPorIdentificacion(idProfesor);
         Curso c = academia.buscarCursoPorCodigo(codCurso);
 
-        // Validación de existencia de componentes
+        // Validación de existencia de componentes obligatorios
         if (e == null || c == null) {
             return false;
         }
 
-        // Construcción de la matrícula con el Patrón Builder
-        Matricula nuevaMatricula = new MatriculaBuilder()
-                .conId(idMatricula)
-                .conFecha(LocalDate.now())
-                .conDescuento(descuento)
-                .conEstudiante(e)
-                .conProfesor(p)
-                .conCurso(c)
-                .build();
+        // 1. Instanciamos e iniciamos la configuración del Builder
+        Matricula.Builder builder = new Matricula.Builder()
+                .id(idMatricula)
+                .fechaMatricula(LocalDate.now())
+                .descuento(descuento)
+                .estudiante(e)
+                .profesor(p)
+                .curso(c);
 
-        // Agregar los servicios adicionales seleccionados
+        // 2. Agregamos los servicios adicionales AL BUILDER antes de construir la matrícula
         if (codServicios != null) {
             for (String codServ : codServicios) {
                 ServicioAdicional s = academia.buscarServicioPorCodigo(codServ);
                 if (s != null) {
-                    nuevaMatricula.agregarServicio(s);
+                    builder.agregarServicio(s); // Método ejecutado sobre el Builder
                 }
             }
         }
 
+        // 3. Construimos el objeto Matricula final
+        Matricula nuevaMatricula = builder.build();
+
+        // 4. Registramos la matrícula en la academia
         academia.registrarMatricula(nuevaMatricula);
         return true;
     }
-
-    public double consultarIngresos(LocalDate fechaInicio, LocalDate fechaFin) {
-        // Implementación directa del contrato de la interfaz ICalculadoraIngresos
-        return academia.calcularIngresosEntre(fechaInicio, fechaFin);
-    }
-
-    public List<Matricula> obtenerMatriculas() {
-        return academia.getListMatriculas();
-    }
 }
-
