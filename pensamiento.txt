@@ -1,0 +1,54 @@
+Pensamiento Computacional
+1. Abstracción
+¿Qué se solicita?
+Desarrollar un sistema que permita gestionar, los estudiantes, cursos, profesores y pagos de la
+academia de idiomas Lenguaje Cafetero
+
+
+
+¿Qué información es relevante ?
+nombreCompleto, documentoIdentidad, telefono, correoElectronico, edad, fechaRegistro,
+codigo, nombreCurso, idiomaCurso, descripcion, duracionMeses, valorMensualidad, estado,
+beneficios, cantidadSesionesProfesor, nivelReferenciaRequerido, objetivosEstudiante,
+valorFinalMatricula, descuento, identificacionProfesor, nombreProfesor, idiomaEnsenado,
+telefonoProfesor, tarifaPorSesion, codigoServicio, nombreServicio, descripcionServicio,
+precio, disponibilidad, fechaInicial, fechaFinal, ingresosGenerados, nombreComercial, nit,
+direccion, paginaWeb, idMatricula, fechaMatricula, costoTotal.
+
+
+¿Cómo se agrupa la información relevante?
+Estudiante [nombreCompleto, documentoIdentidad, telefono, correoElectronico,
+edad, fechaRegistro]
+Profesor [ nombreProfesor, identificacionProfesor, telefonoProfesor,
+correoElectronico, idiomaEnsenado, tarifaPorSesion]
+Curso [codigo, nombreCurso, idiomaCurso, estado, descripcion, duracionMeses,
+valorMensualidad]
+ServicioAdicional [codigoServicio, nombreServicio, descripcionServicio, precio,
+disponibilidad]
+Matricula [idMatricula, fechaMatricula, descuento, estudiante, profesor, curso,
+serviciosAdicionales]
+Academia [nombreComercial, nit, direccion, paginaWeb]
+
+
+
+¿Qué funcionalidades se solicitan finalmente?
+● Registro y gestión de personas (estudiantes y profesores).
+● Creación y asignación de cursos con docentes responsables.
+● Asignación de servicios adicionales para la comunidad estudiantil.
+● Procesamiento y cálculo del costo total de matrículas.
+
+
+
+2. Descomposición
+¿Cómo se distribuyen las funcionalidades?
+MAPA UML
+
+
+3. Reconocimiento de funciones
+¿Qué puede reutilizar de la solución de otros problemas?
+POO (herencia, listas, búsqueda por ID), acumuladores de totales, Singleton/Factory/Builder,
+MVC y controles JavaFX vistos en clase.
+
+
+4. Codificación
+¿Cómo escribir la solución en Java?
