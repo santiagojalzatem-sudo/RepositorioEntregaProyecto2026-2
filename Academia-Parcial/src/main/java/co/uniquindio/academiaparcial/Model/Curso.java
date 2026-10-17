@@ -3,7 +3,7 @@ package co.uniquindio.academiaparcial.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Curso {
+public abstract class   Curso {
     private String codigo;
     private String nombre;
     private Idioma idioma;
