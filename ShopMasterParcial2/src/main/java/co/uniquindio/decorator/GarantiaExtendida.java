@@ -2,8 +2,6 @@ package co.uniquindio.decorator;
 
 import co.uniquindio.composite.IComponenteProducto;
 
-import java.lang.annotation.Documented;
-
 public class GarantiaExtendida extends DecoradorProducto {
 
     public GarantiaExtendida(IComponenteProducto producto) {
